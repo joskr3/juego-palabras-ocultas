@@ -52,16 +52,16 @@ const tiempoSpan = document.getElementById("tiempo");
 const letraInput = document.getElementById("letra-input");
 const $btnLetra = document.getElementById("btn-letra");
 const $btnPista = document.getElementById("btn-pista");
-const $pista = document.getElementById("pista");
-const $mensaje = document.getElementById("mensaje");
+let $pista = document.getElementById("pista");
+let $mensaje = document.getElementById("mensaje");
 const rankingList = document.getElementById("ranking-list");
 
 const iniciarJuego = () => {
   const nivel = $nivelSelect && $nivelSelect.value;
   const config = NIVEL_CONFIG[nivel] || NIVEL_CONFIG.facil;
-
+console.log(palabrasConPistas)
   const indice = Math.floor(Math.random() * palabrasConPistas.length);
-  const obj = palabrasConPistas(indice);
+  const obj = palabrasConPistas[indice];
   palabraSecreta = obj.palabra;
 
   indicePista = 0;
@@ -70,7 +70,7 @@ const iniciarJuego = () => {
   estado = Array(palabraSecreta.length).fill("_");
   actualizarGuiones();
 
-  $pista = "";
+  $pista.textContent = "";
   if ($mensaje) {
     $mensaje.textContent = "";
   }
