@@ -15,7 +15,7 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: min-content 1fr min-content;
-  gap: 0px 0px;
+  gap: 10px 10px;
   grid-template-areas:
     "header"
     "main"
@@ -24,14 +24,19 @@ body {
 
 header {
   grid-area: header;
+  border: 1px solid #007bff;
+  padding: 1rem;
 }
 
 main {
   grid-area: main;
+  padding: 1rem;
+  border: 1px solid salmon;
 }
 
 footer {
   grid-area: footer;
+  border: 1px solid lightgreen;
 }
 
 #guiones {
@@ -57,4 +62,15 @@ button:disabled {
   border: none;
   border-radius: 12px;
   margin: 1rem;
+}
+
+
+#nivel-section,
+#ranking-section {
+  margin-bottom: 1rem;
+}
+
+#tiempo,
+#puntaje {
+  font-weight: bold;
 }
