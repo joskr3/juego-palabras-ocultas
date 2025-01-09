@@ -158,6 +158,98 @@ const pedirPista = () => {
   }
 };
 
+function restarPuntaje(n) {
+  puntaje -= n;
+  if (puntaje < 0) {
+    puntaje = 0;
+  }
+  if (puntajeSpan) {
+    puntajeSpan.textContent = puntaje;
+  }
+
+  if (puntaje === 0) {
+    gameOver(false);
+  }
+}
+
+function revisarFin() {
+  if (!estado.includes("_")) {
+    gameOver(true);
+  }
+}
+
+function gameOver(ganado) {
+  if (timer) {
+    clearInterval(timer);
+    timer = null;
+  }
+
+  if (letraInput) {
+    letraInput.disabled = true;
+  }
+
+  if ($btnLetra) {
+    $btnLetra.disabled = true;
+  }
+
+  if ($btnPista) {
+    $btnPista.disabled = true;
+  }
+
+  if (ganado) {
+    if ($mensaje) {
+      $mensaje.style.color = "green";
+      $mensaje.textContent = "! Ganaste";
+      guardarEnRanking(puntaje)
+      renderRanking();
+    }
+  } else {
+    if ($mensaje) {
+      $mensaje.style.color = red;
+      $mensaje.textContent =
+        "Perdiste, la palabra secreta era:" + palabraSecreta;
+    }
+  }
+}
+
+function guardarEnRanking(puntaje) {
+  const nombre = prompt("Introduce tu nombre:", "Jugador");
+  const record = {
+    nombre,
+    puntaje,
+    fecha: new Date().toLocaleString(),
+  };
+  ranking.push(record);
+  ranking.sort((a, b) => b.puntaje - a.puntaje);
+  localStorage.setItem("rankingPalabraOculta", JSON.stringify(ranking));
+}
+
+function cargarRankingDeLocalStorage() {
+  const data = localStorage.getItem("rankingPalabraOculta");
+  if (data) {
+    try {
+      ranking = JSON.parse(data);
+    } catch (error) {
+      ranking = [];
+      console.error(error);
+    }
+  } else {
+    ranking = [];
+  }
+}
+function renderRanking() {
+  if (rankingList) {
+    rankingList.innerHTML = "";
+  }
+  for (let index = 0; index < ranking.length && index < 5; index++) {
+    const li = document.createElement("li");
+    li.textContent = `${index + 1}. ${ranking[index].nombre} - ${
+      ranking[index].puntaje
+      } pts ${ranking[ index ].fecha}`;
+    rankingList.appendChild(li)
+  }
+}
+
 if ($btnIniciar) {
   $btnIniciar.addEventListener("click", iniciarJuego);
 }
@@ -170,7 +262,7 @@ if ($btnPista) {
   $btnPista.addEventListener("click", pedirPista);
 }
 
-// window.document.addEventListener( "load", () => {
-//   cargarRankingDeLocalStorage();
-//   renderRanking();
-// })
+window.document.addEventListener( "load", () => {
+  cargarRankingDeLocalStorage();
+  renderRanking();
+})
