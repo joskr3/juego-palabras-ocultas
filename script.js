@@ -115,8 +115,9 @@ function actualizarGuiones() {
 
 //HOISTING
 
-const probarLetra = () => {
+const probarLetra = () => { 
   const letra = letraInput && letraInput.value.toUpperCase().trim();
+
   if (letraInput) {
     letraInput.value = "";
   }
@@ -126,10 +127,15 @@ const probarLetra = () => {
   }
 
   let acierto = false;
+  console.log(palabraSecreta)
   for (let index = 0; index < palabraSecreta.length; index++) {
-    estado[index] = letra;
+    estado[ index ] = letra;
+    console.log(estado)
     acierto = true;
   }
+
+  console.log(letra);
+
 
   if (!acierto) {
     const nivel = $nivelSelect.value;
