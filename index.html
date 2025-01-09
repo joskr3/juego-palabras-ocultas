@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,42 @@
   <script type="module" src="script.js"></script>
   <title>Palabras ocultas</title>
 </head>
+
 <body>
-  <h1>Hola mundo</h1>
+  <header>
+    <h1>Palabra oculta con pistas</h1>
+  </header>
+  <main>
+    <div id="nivel-section">
+      <label for="nivel-select">Dificultad:</label>
+      <select name="nivel-select" id="nivel-select">
+        <option value="facil">Fácil</option>
+        <option value="normal">Normal</option>
+        <option value="dificil">Difícil</option>
+      </select>
+      <button type="button" id="btn-iniciar">Iniciar</button>
+    </div>
+    <div id="guiones"></div>
+    <p>Puntaje:
+      <span id="puntaje">0</span>
+      | Tiempo:
+      <span id="tiempo">0</span>
+    </p>
+    <div>
+      <button type="button" id="btn-pista" disabled>Pedir pista</button>
+      <p id="pista"></p>
+    </div>
+
+    <h2 id="mensaje"></h2>
+
+    <section id="ranking-section">
+      <h3>Ranking (Top Puntajes)</h3>
+      <ol id="ranking-list"></ol>
+    </section>
+  </main>
+  <footer>
+    <p>Juego de palabaras ocultas</p>
+  </footer>
 </body>
+
 </html>
