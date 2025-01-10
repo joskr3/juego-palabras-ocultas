@@ -4,51 +4,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script type="module" src="script.js"></script>
   <title>Palabras ocultas</title>
 </head>
 
 <body>
-  <header>
-    <h1>Palabra oculta con pistas</h1>
-  </header>
-  <main>
-    <div id="nivel-section">
-      <label for="nivel-select">Dificultad:</label>
-      <select name="nivel-select" id="nivel-select">
-        <option value="facil">Fácil</option>
-        <option value="normal">Normal</option>
-        <option value="dificil">Difícil</option>
-      </select>
-      <button type="button" id="btn-iniciar">Iniciar</button>
-    </div>
-    <div id="guiones"></div>
-    <p>Puntaje:
-      <span id="puntaje">0</span>
-      | Tiempo:
-      <span id="tiempo">0</span>
-    </p>
-    <div>
-      <input type="text" name="letra-input" id="letra-input" maxlength="1" placeholder="letra" disabled>
-        <button type="button" id="btn-letra">Probar letra</button>
-    </div>
-  
-    <div>
-      <button type="button" id="btn-pista" disabled>Pedir pista</button>
-      <p id="pista"></p>
-    </div>
+<header>
+  <h1>Palabra Oculta con Pistas</h1>
+</header>
 
-    <h2 id="mensaje"></h2>
+<main>
+  <!-- (1) Sección de nivel + iniciar con bounce -->
+  <div id="nivel-section">
+    <label for="nivel-select">Dificultad:</label>
+    <select id="nivel-select">
+      <option value="facil" selected>Fácil</option>
+      <option value="normal">Normal</option>
+      <option value="dificil">Difícil</option>
+    </select>
+    <button id="btn-iniciar" class="bounce">Iniciar</button>
+  </div>
 
-    <section id="ranking-section">
-      <h3>Ranking (Top Puntajes)</h3>
-      <ol id="ranking-list"></ol>
-    </section>
-  </main>
-  <footer>
-    <p>Juego de palabaras ocultas</p>
-  </footer>
+  <!-- (2) Muestra la palabra oculta y stats -->
+  <div id="guiones">_ _ _</div>
+  <div id="info-line">Puntaje: <span id="puntaje">0</span> | Tiempo: <span id="tiempo">0</span></div>
+
+  <!-- (3) Input y botón para pedir pista -->
+  <div id="input-section">
+    <input type="text" id="letra-input" maxlength="1" placeholder="Letra" disabled />
+    <button id="btn-pista" disabled>Pedir Pista</button>
+  </div>
+
+  <p id="pista"></p>
+  <h2 id="mensaje"></h2>
+
+  <!-- (4) Sección letras usadas -->
+  <div id="usadas-section">
+    <div class="usadas-box">
+      <h4>Letras Correctas</h4>
+      <p id="correctas"></p>
+    </div>
+    <div class="usadas-box">
+      <h4>Letras Incorrectas</h4>
+      <p id="incorrectas"></p>
+    </div>
+  </div>
+
+  <!-- (5) Ranking -->
+  <section id="ranking-section">
+    <h3>Ranking (Top Puntajes)</h3>
+    <ol id="ranking-list"></ol>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; Juego Palabra Oculta </p>
+</footer>
 </body>
 
 </html>
