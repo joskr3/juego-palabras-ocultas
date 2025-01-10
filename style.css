@@ -1,4 +1,6 @@
-/* (A) Reseteo y tipografía base */
+/********************************************
+     * (A) Reset y estilos globales
+     ********************************************/
 * {
   margin: 0;
   padding: 0;
@@ -36,7 +38,9 @@ h1 {
   margin-bottom: 1rem;
 }
 
-/* (B) Sección de nivel y botón iniciar */
+/********************************************
+     * (B) Sección de nivel y botón iniciar
+     ********************************************/
 #nivel-section {
   display: flex;
   gap: 0.8rem;
@@ -73,7 +77,9 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* (C) Animación bounce */
+/********************************************
+     * (C) Animación bounce para el botón Iniciar
+     ********************************************/
 @keyframes bounce {
 
   0%,
@@ -93,16 +99,19 @@ button:disabled {
   }
 }
 
-/* Clase para aplicar animación */
 .bounce {
   animation: bounce 1.5s infinite;
 }
 
-/* (D) Guiones, puntaje, tiempo */
+/********************************************
+     * (D) Guiones, puntaje, tiempo
+     ********************************************/
 #guiones {
   font-size: 2rem;
   letter-spacing: 0.3rem;
   margin-bottom: 1rem;
+  min-height: 2.4rem;
+  /* Para que no salte la maquetación */
 }
 
 #info-line {
@@ -115,7 +124,9 @@ button:disabled {
   margin: 0 0.6rem;
 }
 
-/* (E) Sección input/pista */
+/********************************************
+     * (E) Sección input/pista
+     ********************************************/
 #input-section {
   display: flex;
   gap: 0.5rem;
@@ -149,9 +160,12 @@ button:disabled {
   color: #007bff;
   font-style: italic;
   margin-top: 0.5rem;
+  min-height: 1.2rem;
 }
 
-/* (F) Mensaje final */
+/********************************************
+     * (F) Mensaje final
+     ********************************************/
 #mensaje {
   margin-top: 1rem;
   font-size: 1.1rem;
@@ -159,7 +173,9 @@ button:disabled {
   text-align: center;
 }
 
-/* (G) Ranking y letras usadas */
+/********************************************
+     * (G) Ranking y letras usadas
+     ********************************************/
 #ranking-section {
   margin-top: 1.5rem;
   width: 100%;
@@ -185,7 +201,6 @@ button:disabled {
   margin-bottom: 0.3rem;
 }
 
-/* (H) Sección de letras usadas */
 #usadas-section {
   width: 100%;
   margin-top: 1rem;
@@ -213,7 +228,9 @@ button:disabled {
   min-height: 1.2rem;
 }
 
-/* (I) Responsivo */
+/********************************************
+     * (H) Responsivo
+     ********************************************/
 @media (max-width: 500px) {
   #guiones {
     font-size: 1.5rem;

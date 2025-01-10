@@ -1,5 +1,4 @@
 // @ts-nocheck
-
 /******************************************************
  * (A) Datos base: Palabras con pistas + Config Nivel
  ******************************************************/
@@ -31,17 +30,15 @@ const NIVEL_CONFIG = {
  * (B) Variables globales
  ******************************************************/
 let palabraSecreta = "";
-let estado = []; // "_" o letras
+let estado = [];
 let puntaje = 0;
 let indicePista = 0;
 let tiempoRestante = 0;
 let timer = null;
 
-// Arrays para letras usadas
 let letrasCorrectas = [];
 let letrasIncorrectas = [];
 
-// Ranking
 let ranking = [];
 
 /******************************************************
@@ -53,21 +50,19 @@ const $guiones = document.getElementById("guiones");
 const $puntajeSpan = document.getElementById("puntaje");
 const $tiempoSpan = document.getElementById("tiempo");
 const $letraInput = document.getElementById("letra-input");
+const $btnProbar = document.getElementById("btn-probar");
 const $btnPista = document.getElementById("btn-pista");
 const $pista = document.getElementById("pista");
 const $mensaje = document.getElementById("mensaje");
 
-// Secciones de letras usadas
 const $correctas = document.getElementById("correctas");
 const $incorrectas = document.getElementById("incorrectas");
-
-// Ranking
 const $rankingList = document.getElementById("ranking-list");
 
 /******************************************************
  * (D) Eventos
  ******************************************************/
-// (D1) Botón "Iniciar" con animación bounce -> Quitar la animación en el click
+// (D1) Botón "Iniciar"
 if ($btnIniciar) {
   $btnIniciar.addEventListener("click", () => {
     // quitar la clase bounce
@@ -76,22 +71,17 @@ if ($btnIniciar) {
   });
 }
 
-// (D2) Input => al presionar Enter, probarLetra
-if ($letraInput) {
-  $letraInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      probarLetra();
-    }
-  });
+// (D2) Botón "Probar Letra"
+if ($btnProbar) {
+  $btnProbar.addEventListener("click", probarLetra);
 }
 
-// (D3) Botón pedir pista
+// (D3) Botón "Pedir Pista"
 if ($btnPista) {
   $btnPista.addEventListener("click", pedirPista);
 }
 
-// (D4) Al cargar => cargar ranking
+// (D4) Cargar ranking al abrir la ventana
 window.addEventListener("load", () => {
   cargarRankingDeLocalStorage();
   renderRanking();
@@ -106,40 +96,42 @@ window.addEventListener("load", () => {
  * (E) iniciarJuego()
  ******************************************************/
 function iniciarJuego() {
-  // (E1) Obtener nivel
+  // 1) Nivel
   const nivel = $nivelSelect && $nivelSelect.value;
   const config = NIVEL_CONFIG[nivel] || NIVEL_CONFIG.facil;
 
-  // (E2) Seleccionar palabra
+  // 2) Seleccionar palabra
   const indice = Math.floor(Math.random() * palabrasConPistas.length);
   const obj = palabrasConPistas[indice];
   palabraSecreta = obj.palabra;
 
-  // (E3) Reiniciar variables
+  // 3) Reiniciar variables
   indicePista = 0;
   puntaje = config.puntajeInicial;
   tiempoRestante = config.tiempo || 60;
 
-  // (E4) Crear estado con "_"
+  // 4) Crear estado con "_"
   estado = Array(palabraSecreta.length).fill("_");
   actualizarGuiones();
 
-  // (E5) Limpiar y mostrar
+  // 5) Limpiar pista y mensaje
   if ($pista) $pista.textContent = "";
   if ($mensaje) $mensaje.textContent = "";
+
   if ($puntajeSpan) $puntajeSpan.textContent = puntaje;
   if ($tiempoSpan) $tiempoSpan.textContent = tiempoRestante;
 
-  // (E6) Vaciar arrays de letras usadas y mostrarlos
+  // 6) Vaciar arrays de letras correctas/incorrectas
   letrasCorrectas = [];
   letrasIncorrectas = [];
   renderLetrasUsadas();
 
-  // Habilitar input y botón
+  // Habilitar input y botones
   if ($letraInput) $letraInput.disabled = false;
+  if ($btnProbar) $btnProbar.disabled = false;
   if ($btnPista) $btnPista.disabled = false;
 
-  // (E7) Timer
+  // 7) Timer
   if (timer) clearInterval(timer);
   timer = setInterval(() => {
     tiempoRestante--;
@@ -170,21 +162,19 @@ function probarLetra() {
   if ($letraInput) {
     $letraInput.value = "";
   }
-
   if (!letra) return;
 
-  // (G1) Ver si ya se usó incorrecta
+  // Ver si ya se usó incorrecta
   if (letrasIncorrectas.includes(letra)) {
-    // no penalizamos ni nada, simplemente ignoramos
+    // no penalizamos 2 veces, regresamos
     return;
   }
-  // (G2) Ver si ya se usó correcta
+  // Ver si ya se usó correcta
   if (letrasCorrectas.includes(letra)) {
     // ya se añadió, no pasa nada
     return;
   }
 
-  // (G3) Buscar en la palabra
   let acierto = false;
   for (let i = 0; i < palabraSecreta.length; i++) {
     if (palabraSecreta[i] === letra) {
@@ -194,17 +184,14 @@ function probarLetra() {
   }
 
   if (acierto) {
-    // añadir a letrasCorrectas
     letrasCorrectas.push(letra);
   } else {
-    // penalizar y añadir a letrasIncorrectas
     letrasIncorrectas.push(letra);
     const nivel = $nivelSelect && $nivelSelect.value;
     const config = NIVEL_CONFIG[nivel] || NIVEL_CONFIG.facil;
     restarPuntaje(config.penaLetra);
   }
 
-  // (G4) Actualizar guiones y render
   actualizarGuiones();
   renderLetrasUsadas();
   revisarFin();
@@ -253,6 +240,7 @@ function restarPuntaje(n) {
  ******************************************************/
 function revisarFin() {
   if (!estado.includes("_")) {
+    // ganó
     gameOver(true);
   }
 }
@@ -261,13 +249,14 @@ function revisarFin() {
  * (K) gameOver(ganado)
  ******************************************************/
 function gameOver(ganado) {
-  // Detener timer
+  // detener timer
   if (timer) {
     clearInterval(timer);
     timer = null;
   }
-  // Deshabilitar input
+  // deshabilitar
   if ($letraInput) $letraInput.disabled = true;
+  if ($btnProbar) $btnProbar.disabled = true;
   if ($btnPista) $btnPista.disabled = true;
 
   if ($mensaje) {
@@ -284,13 +273,15 @@ function gameOver(ganado) {
 }
 
 /******************************************************
- * (L) Sección de letras usadas (correctas/incorrectas)
+ * (L) renderLetrasUsadas() => Muestra correctas/incorrectas
  ******************************************************/
 function renderLetrasUsadas() {
-  const $c = document.getElementById("correctas");
-  const $i = document.getElementById("incorrectas");
-  if ($c) $c.textContent = letrasCorrectas.join(" ");
-  if ($i) $i.textContent = letrasIncorrectas.join(" ");
+  if ($correctas) {
+    $correctas.textContent = letrasCorrectas.join(" ");
+  }
+  if ($incorrectas) {
+    $incorrectas.textContent = letrasIncorrectas.join(" ");
+  }
 }
 
 /******************************************************
@@ -304,7 +295,7 @@ function guardarEnRanking(puntaje) {
     fecha: new Date().toLocaleString(),
   };
   ranking.push(record);
-  // Orden desc
+  // Ordenar desc
   ranking.sort((a, b) => b.puntaje - a.puntaje);
   localStorage.setItem("rankingPalabraOculta", JSON.stringify(ranking));
 }
@@ -316,13 +307,11 @@ function cargarRankingDeLocalStorage() {
       ranking = JSON.parse(data);
     } catch (error) {
       ranking = [];
-      console.error(error);
     }
   } else {
     ranking = [];
   }
 }
-
 function renderRanking() {
   if (!$rankingList) return;
   $rankingList.innerHTML = "";
